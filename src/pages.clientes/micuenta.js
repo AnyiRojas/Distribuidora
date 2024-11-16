@@ -55,7 +55,7 @@ const App = () => {
       }
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
-      showNotification('Error al actualizar el usuario.');
+      showNotification('Error al actualizar la información.');
     }
   };
 
@@ -80,7 +80,7 @@ const App = () => {
 
   const showNotification = (message) => {
     setNotification(message);
-    setTimeout(() => setNotification(''), 3000);
+    setTimeout(() => setNotification(''), 3000); // Desaparece el mensaje después de 3 segundos
   };
 
   const closeModal = () => {
@@ -118,6 +118,7 @@ const App = () => {
       </a>
       <Footer />
 
+      {/* Modales */}
       {isEditAccountModalOpen && userData && (
         <Modal isOpen={isEditAccountModalOpen} onClose={closeModal}>
           <EditPersonalInfoModal userData={userData} onClose={closeModal} onSave={handleUpdateUsuario} />
@@ -146,11 +147,13 @@ const App = () => {
         </Modal>
       )}
 
+      {/* Notificación */}
       {notification && <div className="notification">{notification}</div>}
     </div>
   );
 };
 
+// Componente Modal
 const Modal = ({ onClose, children, isOpen }) => (
   <div className={`modal-custom ${isOpen ? 'show' : ''}`} onClick={onClose}>
     <div className="modal-content-custom" onClick={(e) => e.stopPropagation()}>
