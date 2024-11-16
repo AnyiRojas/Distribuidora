@@ -100,35 +100,27 @@ const ProductPage = ({ addToCart }) => {
 
     const handleAddToCart = async (product) => {
         const documento = localStorage.getItem('documento');
-
+    
         if (!documento) {
             setNotification('Por favor, inicie sesión para agregar productos al carrito.');
-            setTimeout(() => setNotification(''), 3000); // Ocultar después de 3 segundos
+            setTimeout(() => setNotification(''), 3000);
             return;
         }
-
-        // Verifica la cantidad disponible antes de agregar
-        if (product.cantidad_disponible < 1) {
-            setNotification('Producto agotado');
-            setTimeout(() => setNotification(''), 3000); // Ocultar después de 3 segundos
-            return;
-        }
-
+    
         try {
             const response = await axios.post('https://conection-1.onrender.com/api/carrito/agregar', {
                 documento,
                 id_producto: product.id_producto,
                 cantidad: 1,
-                precio_adicional: 0 // Asegúrate de enviar esto si no hay opciones adicionales
             });
-
+    
             setNotification('Producto agregado al carrito');
-            setModalData(null);
-            setTimeout(() => setNotification(''), 3000); // Ocultar después de 3 segundos
+            setModalData(null); // Cerrar modal después de agregar
+            setTimeout(() => setNotification(''), 3000);
         } catch (error) {
             console.error('Error adding product to cart:', error);
             setNotification(`Error al agregar el producto al carrito: ${error.response?.data?.message || error.message}`);
-            setTimeout(() => setNotification(''), 3000); // Ocultar después de 3 segundos
+            setTimeout(() => setNotification(''), 3000);
         }
     };
 

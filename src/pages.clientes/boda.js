@@ -83,36 +83,30 @@ const ProductPage = ({ addToCart }) => {
 
     const handleAddToCart = async (product) => {
         const documento = localStorage.getItem('documento');
+    
         if (!documento) {
             setNotification('Por favor, inicie sesión para agregar productos al carrito.');
+            setTimeout(() => setNotification(''), 3000);
             return;
         }
-
+    
         try {
-            const response = await axios.post('https://conection-1.onrender.com/api/carritos', {
-                documento: documento,
+            const response = await axios.post('https://conection-1.onrender.com/api/carrito/agregar', {
+                documento,
                 id_producto: product.id_producto,
-                cantidad: 1
+                cantidad: 1,
             });
-
-            if (response.status === 200 || response.status === 201) {
-                addToCart({
-                    id: product.id_producto,
-                    title: product.nombre_producto,
-                    price: product.precio_producto,
-                    img: product.foto_ProductoURL,
-                    quantity: 1
-                });
-                setNotification(`Producto agregado al carrito! Subtotal: ${response.data.subtotal}`);
-            } else {
-                throw new Error('Error inesperado al agregar al carrito');
-            }
+    
+            setNotification('Producto agregado al carrito');
+            setModalData(null); // Cerrar modal después de agregar
+            setTimeout(() => setNotification(''), 3000);
         } catch (error) {
-            console.error('Error al agregar producto al carrito:', error);
-            setNotification('Error al agregar producto al carrito. Detalles: ' + error.message);
+            console.error('Error adding product to cart:', error);
+            setNotification(`Error al agregar el producto al carrito: ${error.response?.data?.message || error.message}`);
+            setTimeout(() => setNotification(''), 3000);
         }
     };
-
+    
     const handleAddToCartFromModal = () => {
         if (modalData) {
             handleAddToCart(modalData);
