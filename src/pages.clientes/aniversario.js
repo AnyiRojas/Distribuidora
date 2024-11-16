@@ -37,7 +37,7 @@ const ProductPage = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/productos/fecha-especial/3'); // Cambia el ID según sea necesario
+                const response = await axios.get('https://conection-1.onrender.com/api/productos/fecha-especial/3'); // Cambia el ID según sea necesario
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error al obtener productos:', error);
@@ -86,7 +86,7 @@ const ProductPage = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:4000/api/carritos', {
+            const response = await axios.post('https://conection-1.onrender.com/api/carritos', {
                 documento: documento,
                 id_producto: product.id_producto,
                 cantidad: 1

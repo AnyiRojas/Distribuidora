@@ -14,7 +14,7 @@ const RequestPasswordReset = () => {
             const sendResetRequest = async () => {
                 try {
                     const response = await axios.post(
-                        'http://localhost:4000/api/request-password-reset',
+                        'https://conection-1.onrender.com/api/request-password-reset',
                         { correo_electronico_usuario: email },
                         { withCredentials: true }
                     );

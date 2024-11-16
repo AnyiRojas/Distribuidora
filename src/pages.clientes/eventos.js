@@ -29,7 +29,7 @@ const EventosPage = () => {
         // Obtener eventos desde la API
         const fetchEventos = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/eventos');
+                const response = await axios.get('https://conection-1.onrender.com/api/eventos');
                 setEventos(response.data);
             } catch (error) {
                 console.error('Error al obtener eventos:', error);

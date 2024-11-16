@@ -37,7 +37,7 @@ const DetalleProducto = () => {
     useEffect(() => {
         const fetchOpcionesAdicionales = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/opciones-adicionales');
+                const response = await axios.get('https://conection-1.onrender.com/api/opciones-adicionales');
                 setOpcionesAdicionales(response.data);
             } catch (error) {
                 console.error('Error al obtener las opciones adicionales:', error);
@@ -112,7 +112,7 @@ const DetalleProducto = () => {
         try {
             // Hacer la solicitud para agregar al carrito
             const response = await axios.post(
-                'http://localhost:4000/api/carrito-item/agregar',
+                'https://conection-1.onrender.com/api/carrito-item/agregar',
                 {
                     documento,
                     id_producto: product.id_producto,

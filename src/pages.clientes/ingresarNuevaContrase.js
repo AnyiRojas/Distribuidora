@@ -15,7 +15,7 @@ const ResetPassword = () => {
         e.preventDefault();
     
         try {
-            const response = await axios.post('http://localhost:4000/api/reset-password', {
+            const response = await axios.post('https://conection-1.onrender.com/api/reset-password', {
                 token,
                 nueva_contrasena,
             });

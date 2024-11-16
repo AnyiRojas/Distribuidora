@@ -10,7 +10,7 @@ import axios from 'axios';
 import EditPersonalInfoModal from '../components/EditPersonalInfoModal';
 import ChangePasswordModal from '../components/ChangePasswordModal';
 
-const API_URL = 'http://localhost:4000/api';
+const API_URL = 'https://conection-1.onrender.com/api';
 
 const App = () => {
   const [isEditAccountModalOpen, setEditAccountModalOpen] = useState(false);

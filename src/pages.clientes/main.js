@@ -48,7 +48,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/productos');
+        const response = await axios.get('https://conection-1.onrender.com/api/productos');
         if (Array.isArray(response.data)) {
           setProducts(response.data);
         } else {

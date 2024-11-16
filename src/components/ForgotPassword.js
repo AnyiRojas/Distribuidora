@@ -11,7 +11,7 @@ const ForgotPassword = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await axios.post('http://localhost:4000/api/reset-password', { email });
+            await axios.post('https://conection-1.onrender.com/api/reset-password', { email });
             setNotification('Se ha enviado un enlace de restablecimiento de contraseña a su correo.');
             setTimeout(() => navigate('/login'), 3000); // Redirige después de 3 segundos
         } catch (error) {

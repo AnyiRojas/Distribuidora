@@ -14,7 +14,7 @@ const AddressModal = ({ onClose }) => {
         }
         try {
             const documento = localStorage.getItem('documento');
-            await axios.post(`http://localhost:4000/api/usuarios/${documento}/direccion`, {
+            await axios.post(`https://conection-1.onrender.com/api/usuarios/${documento}/direccion`, {
                 direccion: address,
             });
             onClose(); // Cerrar el modal después de agregar la dirección
