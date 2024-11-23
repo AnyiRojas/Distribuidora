@@ -17,7 +17,7 @@ const CreateProductModal = ({ onClose, onSave }) => {
             <div className="admin-modal-content">
                 <span className="admin-modal-close" onClick={onClose}>&times;</span>
                 <h2 className="admin-modal-header">Crear Producto</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSaubmit={handleSubmit}>
                     <label className="admin-form-label">
                         Código:
                         <input type="text" name="campo_codigo" className="admin-form-input" required />

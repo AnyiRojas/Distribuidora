@@ -24,7 +24,7 @@ const App = () => {
 
     const fetchPedidos = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/pedidos');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/pedidos');
             setPedidos(response.data);
         } catch (error) {
             showNotification('Error al obtener pedidos: ' + error.message);
@@ -33,7 +33,7 @@ const App = () => {
 
     const fetchItemsByPedido = async (id_pedido) => {
         try {
-            const response = await axios.get(`https://conection-1.onrender.com/api/pedido/${id_pedido}/items`);
+            const response = await axios.get(`https://conection-gap0.onrender.com/api/pedido/${id_pedido}/items`);
             setItemsPedido(response.data);
         } catch (error) {
             showNotification('Error al obtener items del pedido: ' + error.message);
@@ -47,7 +47,7 @@ const App = () => {
 
     const handleTogglePedidoStatus = async (idPedido, nuevoEstado) => {
         try {
-            await axios.patch(`https://conection-1.onrender.com/api/pedidos/${idPedido}/estado`, { nuevo_estado: nuevoEstado });
+            await axios.patch(`https://conection-gap0.onrender.com/api/pedidos/${idPedido}/estado`, { nuevo_estado: nuevoEstado });
             fetchPedidos();
             showNotification(`Estado del pedido ${idPedido} actualizado a "${nuevoEstado}".`);
         } catch (error) {

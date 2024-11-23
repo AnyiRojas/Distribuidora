@@ -41,7 +41,7 @@ const App = () => {
 
     const fetchProductos = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/productos');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/productos');
             setProductos(response.data);
         } catch (error) {
             console.error('Error al obtener productos:', error);
@@ -51,7 +51,7 @@ const App = () => {
 
     const fetchPedidos = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/pedidos');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/pedidos');
             setPedidos(response.data);
         } catch (error) {
             console.error('Error al obtener pedidos:', error);
@@ -61,7 +61,7 @@ const App = () => {
 
     const fetchOpcionesAdicionales = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/opciones-adicionales');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/opciones-adicionales');
             setOpcionesAdicionales(response.data);
         } catch (error) {
             console.error('Error al obtener opciones adicionales:', error);
@@ -71,7 +71,7 @@ const App = () => {
 
     const fetchItemsByPedido = async (id_pedido) => {
         try {
-            const response = await axios.get(`https://conection-1.onrender.com/api/pedido/${id_pedido}/items`);
+            const response = await axios.get(`https://conection-gap0.onrender.com/api/pedido/${id_pedido}/items`);
             setItemsPedido(response.data);
         } catch (error) {
             console.error('Error al obtener items del pedido:', error);
@@ -97,7 +97,7 @@ const App = () => {
             const productoActual = productos.find(p => p.id_producto === idProducto);
             const nuevoEstado = !productoActual.estado_producto;
 
-            await axios.patch(`https://conection-1.onrender.com/api/productos/${idProducto}/estado`, { estado: nuevoEstado });
+            await axios.patch(`https://conection-gap0.onrender.com/api/productos/${idProducto}/estado`, { estado: nuevoEstado });
             fetchProductos();
             showNotification(`Estado del producto ${idProducto} actualizado a "${nuevoEstado ? 'Activo' : 'Inactivo'}".`);
         } catch (error) {
@@ -109,7 +109,7 @@ const App = () => {
     const handleTogglePedidoStatus = async (idPedido, nuevoEstado) => {
         if (!idPedido) return;
         try {
-            await axios.patch(`https://conection-1.onrender.com/api/pedidos/${idPedido}/estado`, { nuevo_estado: nuevoEstado });
+            await axios.patch(`https://conection-gap0.onrender.com/api/pedidos/${idPedido}/estado`, { nuevo_estado: nuevoEstado });
             fetchPedidos();
             showNotification(`Estado del pedido ${idPedido} actualizado a "${nuevoEstado}".`);
         } catch (error) {
@@ -133,7 +133,7 @@ const App = () => {
 
     const createOpcionAdicional = async (nuevaOpcion) => {
         try {
-            await axios.post('https://conection-1.onrender.com/api/opciones-adicionales', nuevaOpcion);
+            await axios.post('https://conection-gap0.onrender.com/api/opciones-adicionales', nuevaOpcion);
             fetchOpcionesAdicionales();
             closeModal();
             showNotification('Opción adicional creada exitosamente.');
@@ -145,7 +145,7 @@ const App = () => {
     const updateOpcionAdicional = async (id_opcion, nuevaOpcion) => {
         try {
             const { opcion_adicional, precio_adicional } = nuevaOpcion; // Desestructura las propiedades
-            await axios.put(`https://conection-1.onrender.com/api/opciones-adicionales/${id_opcion}`, {
+            await axios.put(`https://conection-gap0.onrender.com/api/opciones-adicionales/${id_opcion}`, {
                 nueva_opcion_adicional: opcion_adicional, // Renombra la propiedad
                 nuevo_precio_adicional: precio_adicional // Renombra la propiedad
             });
@@ -159,7 +159,7 @@ const App = () => {
 
     const deleteOpcionAdicional = async (id_opcion) => {
         try {
-            await axios.delete(`https://conection-1.onrender.com/api/opciones-adicionales/${id_opcion}`);
+            await axios.delete(`https://conection-gap0.onrender.com/api/opciones-adicionales/${id_opcion}`);
             fetchOpcionesAdicionales();
             showNotification('Opción adicional eliminada exitosamente.');
         } catch (error) {

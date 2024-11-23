@@ -73,7 +73,7 @@ const App = () => {
 
     const fetchPagos = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/pagos');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/pagos');
             setPagos(response.data); // Asegúrate de que response.data es un array
         } catch (error) {
             console.error('Error al obtener los pagos:', error);
@@ -82,7 +82,7 @@ const App = () => {
 
     const handleUpdateEstadoPago = async (id_pago, nuevoEstado) => {
         try {
-            const response = await axios.put(`https://conection-1.onrender.com/api/pagos/${id_pago}/estado`, { estado_pago: nuevoEstado });
+            const response = await axios.put(`https://conection-gap0.onrender.com/api/pagos/${id_pago}/estado`, { estado_pago: nuevoEstado });
             showNotification('Estado de pago actualizado exitosamente.');
 
             // Actualiza solo el pago que se ha cambiado
@@ -99,7 +99,7 @@ const App = () => {
     // Función para obtener usuarios
     const fetchUsuarios = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/usuarios');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/usuarios');
             setUsuarios(response.data);
         } catch (error) {
             console.error('Error al obtener los usuarios:', error);
@@ -115,7 +115,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.put(`https://conection-1.onrender.com/api/usuario/${documento}`, updatedUsuario);
+            const response = await axios.put(`https://conection-gap0.onrender.com/api/usuario/${documento}`, updatedUsuario);
             if (response.status === 200) {
                 fetchUsuarios();
                 showNotification('Usuario actualizado exitosamente.');
@@ -137,7 +137,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.put(`https://conection-1.onrender.com/api/usuario/${documento}/rol`, { rol_usuario: nuevoRol });
+            const response = await axios.put(`https://conection-gap0.onrender.com/api/usuario/${documento}/rol`, { rol_usuario: nuevoRol });
             if (response.status === 200) {
                 fetchUsuarios();
                 showNotification('Rol actualizado exitosamente.');
@@ -159,7 +159,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.patch(`https://conection-1.onrender.com/api/usuario/${documento}/estado`);
+            const response = await axios.patch(`https://conection-gap0.onrender.com/api/usuario/${documento}/estado`);
             if (response.status === 200) {
                 fetchUsuarios();
                 showNotification('Estado del usuario cambiado exitosamente.');
@@ -282,7 +282,7 @@ const App = () => {
 
     const fetchProductos = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/productos');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/productos');
             setProductos(response.data);
         } catch (error) {
             console.error('Error al obtener los productos:', error);
@@ -292,7 +292,7 @@ const App = () => {
 
     const fetchImages = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/images/producto');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/images/producto');
             setImageList(response.data);
         } catch (error) {
             console.error('Error al obtener imágenes:', error);
@@ -310,7 +310,7 @@ const App = () => {
             return;
         }
         try {
-            const response = await axios.put(`https://conection-1.onrender.com/api/productos/${idProducto}`, formData, {
+            const response = await axios.put(`https://conection-gap0.onrender.com/api/productos/${idProducto}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -343,7 +343,7 @@ const App = () => {
             const nuevoEstado = !productoActual.estado_producto;
 
             // Hacer la solicitud para actualizar el estado
-            const response = await axios.patch(`https://conection-1.onrender.com/api/productos/${idProducto}/estado`, {
+            const response = await axios.patch(`https://conection-gap0.onrender.com/api/productos/${idProducto}/estado`, {
                 estado: nuevoEstado,
             });
 
@@ -399,7 +399,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.post('https://conection-1.onrender.com/api/productos', formData, {
+            const response = await axios.post('https://conection-gap0.onrender.com/api/productos', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -434,7 +434,7 @@ const App = () => {
         }
     
         try {
-            const response = await axios.patch(`https://conection-1.onrender.com/api/productos/${idProducto}/cantidad`, {
+            const response = await axios.patch(`https://conection-gap0.onrender.com/api/productos/${idProducto}/cantidad`, {
                 nuevaCantidad // Enviar la nueva cantidad con el nombre correcto
             });
     
@@ -572,7 +572,7 @@ const App = () => {
 
     const fetchPedidos = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/pedidos'); // Cambiado a /api/pedidos
+            const response = await axios.get('https://conection-gap0.onrender.com/api/pedidos'); // Cambiado a /api/pedidos
             setPedidos(response.data);
         } catch (error) {
             console.error('Error al obtener pedidos:', error);
@@ -588,7 +588,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.patch(`https://conection-1.onrender.com/api/pedidos/${idPedido}/estado`, {
+            const response = await axios.patch(`https://conection-gap0.onrender.com/api/pedidos/${idPedido}/estado`, {
                 nuevo_estado: nuevoEstado
             });
 
@@ -634,7 +634,7 @@ const App = () => {
         }
 
         try {
-            await axios.post('https://conection-1.onrender.com/api/pedidos', formData, {
+            await axios.post('https://conection-gap0.onrender.com/api/pedidos', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             fetchPedidos();
@@ -666,7 +666,7 @@ const App = () => {
         }
 
         try {
-            await axios.put(`https://conection-1.onrender.com/api/pedidos/${currentOrder.id_pedido}`, formData, {
+            await axios.put(`https://conection-gap0.onrender.com/api/pedidos/${currentOrder.id_pedido}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             fetchPedidos();
@@ -762,7 +762,7 @@ const App = () => {
 
     const fetchTiposFlor = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/tipos-flor');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/tipos-flor');
             setTiposFlor(response.data);
         } catch (error) {
             console.error('Error al obtener tipos de flor:', error);
@@ -773,7 +773,7 @@ const App = () => {
         const nombreTipoFlor = tipoFlorData.get('nombre_tipo_flor');
 
         try {
-            const response = await axios.post('https://conection-1.onrender.com/api/tipo-flor', { nombre_tipo_flor: nombreTipoFlor });
+            const response = await axios.post('https://conection-gap0.onrender.com/api/tipo-flor', { nombre_tipo_flor: nombreTipoFlor });
             console.log('Respuesta del servidor:', response.data);
             fetchTiposFlor(); // Función para refrescar la lista de tipos de flores
             showNotification('Tipo de flor agregado exitosamente.');
@@ -794,7 +794,7 @@ const App = () => {
         const nombreTipoFlor = tipoFlorData.get('nombre_tipo_flor');
 
         try {
-            await axios.put(`https://conection-1.onrender.com/api/tipo-flor/${currentTipoFlor.id_tipo_flor}`, {
+            await axios.put(`https://conection-gap0.onrender.com/api/tipo-flor/${currentTipoFlor.id_tipo_flor}`, {
                 nombre_tipo_flor: nombreTipoFlor,
             });
             fetchTiposFlor(); // Función para refrescar la lista de tipos de flores
@@ -808,7 +808,7 @@ const App = () => {
 
     const handleDeleteTipoFlor = async (id_tipo_flor) => {
         try {
-            await axios.delete(`https://conection-1.onrender.com/api/tipo-flor/${id_tipo_flor}`);
+            await axios.delete(`https://conection-gap0.onrender.com/api/tipo-flor/${id_tipo_flor}`);
             fetchTiposFlor();
             showNotification('Tipo de flor eliminado exitosamente.');
         } catch (error) {
@@ -838,7 +838,7 @@ const App = () => {
 
     const fetchFechasEspeciales = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/fechas-especiales');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/fechas-especiales');
             setFechasEspeciales(response.data);
         } catch (error) {
             console.error('Error al obtener las fechas especiales:', error);
@@ -851,7 +851,7 @@ const App = () => {
             const formData = new FormData();
             formData.append('nombre_fecha_especial', fechaEspecialData.get('nombre_fecha_especial'));
 
-            await axios.post('https://conection-1.onrender.com/api/fechas-especiales', formData);
+            await axios.post('https://conection-gap0.onrender.com/api/fechas-especiales', formData);
             fetchFechasEspeciales();
             closeFechaEspecialModal();
             showNotification('Fecha especial añadida exitosamente.');
@@ -868,7 +868,7 @@ const App = () => {
         }
 
         try {
-            await axios.put(`https://conection-1.onrender.com/api/fechas-especiales/${currentFechaEspecial.id_fecha_especial}`, formData);
+            await axios.put(`https://conection-gap0.onrender.com/api/fechas-especiales/${currentFechaEspecial.id_fecha_especial}`, formData);
             fetchFechasEspeciales(); // Refresca la lista después de la actualización
             closeFechaEspecialModal();
             showNotification('Fecha especial actualizada exitosamente.');
@@ -880,7 +880,7 @@ const App = () => {
 
     const handleDeleteFechaEspecial = async (id_fecha_especial) => {
         try {
-            await axios.delete(`https://conection-1.onrender.com/api/fechas-especiales/${id_fecha_especial}`);
+            await axios.delete(`https://conection-gap0.onrender.com/api/fechas-especiales/${id_fecha_especial}`);
             fetchFechasEspeciales();
             showNotification('Fecha especial eliminada exitosamente.');
         } catch (error) {
@@ -961,7 +961,7 @@ const App = () => {
 
     const fetchEventos = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/eventos');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/eventos');
             if (Array.isArray(response.data)) {
                 setEventos(response.data);
             } else {
@@ -983,7 +983,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.post('https://conection-1.onrender.com/api/eventos', formData, {
+            const response = await axios.post('https://conection-gap0.onrender.com/api/eventos', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -1014,7 +1014,7 @@ const App = () => {
         }
 
         try {
-            await axios.put(`https://conection-1.onrender.com/api/eventos/${currentEvento.id_evento}`, formData, {
+            await axios.put(`https://conection-gap0.onrender.com/api/eventos/${currentEvento.id_evento}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -1030,7 +1030,7 @@ const App = () => {
 
     const handleDeleteEvento = async (id_evento) => {
         try {
-            await axios.delete(`https://conection-1.onrender.com/api/eventos/${id_evento}`);
+            await axios.delete(`https://conection-gap0.onrender.com/api/eventos/${id_evento}`);
             fetchEventos();
             showNotification('Evento eliminado exitosamente.'); // Notificación de éxito
         } catch (error) {
@@ -1224,7 +1224,7 @@ const App = () => {
 
     const fetchOpcionesAdicionales = async () => {
         try {
-            const response = await axios.get('https://conection-1.onrender.com/api/opciones-adicionales');
+            const response = await axios.get('https://conection-gap0.onrender.com/api/opciones-adicionales');
             setOpcionesAdicionales(response.data);
         } catch (error) {
             console.error('Error al obtener opciones adicionales:', error);
@@ -1234,7 +1234,7 @@ const App = () => {
 
     const createOpcionAdicional = async (nuevaOpcion) => {
         try {
-            await axios.post('https://conection-1.onrender.com/api/opciones-adicionales', nuevaOpcion);
+            await axios.post('https://conection-gap0.onrender.com/api/opciones-adicionales', nuevaOpcion);
             fetchOpcionesAdicionales();
             closeModal1();
             showNotification('Opción adicional creada exitosamente.');
@@ -1246,7 +1246,7 @@ const App = () => {
     const updateOpcionAdicional = async (id_opcion, nuevaOpcion) => {
         try {
             const { opcion_adicional, precio_adicional } = nuevaOpcion; // Desestructura las propiedades
-            await axios.put(`https://conection-1.onrender.com/api/opciones-adicionales/${id_opcion}`, {
+            await axios.put(`https://conection-gap0.onrender.com/api/opciones-adicionales/${id_opcion}`, {
                 nueva_opcion_adicional: opcion_adicional, // Renombra la propiedad
                 nuevo_precio_adicional: precio_adicional // Renombra la propiedad
             });
@@ -1260,7 +1260,7 @@ const App = () => {
 
     const deleteOpcionAdicional = async (id_opcion) => {
         try {
-            await axios.delete(`https://conection-1.onrender.com/api/opciones-adicionales/${id_opcion}`);
+            await axios.delete(`https://conection-gap0.onrender.com/api/opciones-adicionales/${id_opcion}`);
             fetchOpcionesAdicionales();
             showNotification('Opción adicional eliminada exitosamente.');
         } catch (error) {

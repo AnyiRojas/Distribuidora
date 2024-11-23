@@ -98,7 +98,7 @@ const Register = () => {
         };
 
         try {
-            const response = await axios.post('https://conection-1.onrender.com/api/register', requestData);
+            const response = await axios.post('https://conection-gap0.onrender.com/api/register', requestData);
             setNotification(response.data.message); // Mensaje del servidor
 
             setTimeout(() => {
