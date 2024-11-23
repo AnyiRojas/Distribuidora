@@ -45,6 +45,8 @@ const App = () => {
     const [sortColumn, setSortColumn] = useState('documento');
     const [sortDirection, setSortDirection] = useState('asc');
     const [modalVisible, setModalVisible] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [currentOpcion, setCurrentOpcion] = useState(null);
     const [opcionesAdicionales, setOpcionesAdicionales] = useState([]);
 
