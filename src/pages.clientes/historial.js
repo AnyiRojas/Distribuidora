@@ -39,7 +39,7 @@ const OrderHistory = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(`https://conection-gap0.onrender.com/api/historial/${documento}`);
+      const response = await fetch(`https://conection-ood1.onrender.com/api/historial/${documento}`);
       if (!response.ok) {
         throw new Error('Error al obtener el historial de pedidos');
       }
@@ -66,7 +66,7 @@ const OrderHistory = () => {
     if (decoded && decoded.documento) {
       try {
         // Cancelar el pedido
-        const cancelResponse = await fetch(`https://conection-gap0.onrender.com/api/pedidos/cancelar/${id_pedido}`, {
+        const cancelResponse = await fetch(`https://conection-ood1.onrender.com/api/pedidos/cancelar/${id_pedido}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

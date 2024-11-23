@@ -41,7 +41,7 @@ const PaymentMethod = () => {
 
     const fetchCartItems = async () => {
       try {
-        const response = await axios.get(`https://conection-gap0.onrender.com/api/carrito-item/${id_carrito}`);
+        const response = await axios.get(`https://conection-ood1.onrender.com/api/carrito-item/${id_carrito}`);
         if (Array.isArray(response.data) && response.data.length > 0) {
           setCartItems(response.data);
           const totalSubtotal = response.data.reduce((acc, item) => {
@@ -114,11 +114,11 @@ const PaymentMethod = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post('https://conection-gap0.onrender.com/api/pago-y-pedido', paymentAndOrderData);
+      const response = await axios.post('https://conection-ood1.onrender.com/api/pago-y-pedido', paymentAndOrderData);
 
       if (response.data.mensaje === "Pedido realizado con éxito") {
         // Vaciar carrito tras la compra exitosa
-        await axios.delete(`https://conection-gap0.onrender.com/api/carrito/vaciar/${documento}`);
+        await axios.delete(`https://conection-ood1.onrender.com/api/carrito/vaciar/${documento}`);
         setNotification({ message: 'Pago realizado y pedido creado exitosamente!', type: 'success' });
         navigate('/OrderHistory');
       } else {

@@ -38,7 +38,7 @@ const ProductPage = ({ addToCart }) => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('https://conection-gap0.onrender.com/api/productos/6');
+                const response = await axios.get('https://conection-ood1.onrender.com/api/productos/6');
                 if (Array.isArray(response.data)) {
                     setProducts(response.data);
                 } else {
@@ -108,7 +108,7 @@ const ProductPage = ({ addToCart }) => {
         }
     
         try {
-            const response = await axios.post('https://conection-gap0.onrender.com/api/carrito/agregar', {
+            const response = await axios.post('https://conection-ood1.onrender.com/api/carrito/agregar', {
                 documento,
                 id_producto: product.id_producto,
                 cantidad: 1,

@@ -14,7 +14,7 @@ const RequestPasswordReset = () => {
             const sendResetRequest = async () => {
                 try {
                     const response = await axios.post(
-                        'https://conection-gap0.onrender.com/api/request-password-reset',
+                        'https://conection-ood1.onrender.com/api/request-password-reset',
                         { correo_electronico_usuario: email },
                         { withCredentials: true }
                     );

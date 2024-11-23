@@ -44,7 +44,7 @@ const Login = () => {
         event.preventDefault();
 
         try {
-            const response = await axios.post('https://conection-gap0.onrender.com/api/login', {
+            const response = await axios.post('https://conection-ood1.onrender.com/api/login', {
                 correo_electronico_usuario: email,
                 contrasena_usuario: password
             });
@@ -75,7 +75,7 @@ const Login = () => {
                 }
 
                 // Crear el carrito después de iniciar sesión
-                const responseCarrito = await axios.post('https://conection-gap0.onrender.com/api/carrito/crear', {
+                const responseCarrito = await axios.post('https://conection-ood1.onrender.com/api/carrito/crear', {
                     documento: usuario.documento,
                 });
 
@@ -83,7 +83,7 @@ const Login = () => {
                 localStorage.setItem('id_carrito', responseCarrito.data.id_carrito);
 
                 // Verificar si el usuario tiene dirección registrada
-                const responseDireccion = await axios.get(`https://conection-gap0.onrender.com/api/${usuario.documento}/direccion`);
+                const responseDireccion = await axios.get(`https://conection-ood1.onrender.com/api/${usuario.documento}/direccion`);
 
                 // Guardar el rol del usuario
                 setUserRole(usuario.rol_usuario);

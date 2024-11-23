@@ -44,7 +44,7 @@ const CartPage = () => {
     useEffect(() => {
         const fetchAdditionalOptions = async () => {
             try {
-                const response = await axios.get('https://conection-gap0.onrender.com/api/opciones-adicionales');
+                const response = await axios.get('https://conection-ood1.onrender.com/api/opciones-adicionales');
                 setAdditionalOptions(response.data);
             } catch (error) {
                 console.error('Error al obtener las opciones adicionales:', error);
@@ -61,7 +61,7 @@ const CartPage = () => {
                 return;
             }
             try {
-                const response = await axios.get(`https://conection-gap0.onrender.com/api/carrito/completo/${documento}`);
+                const response = await axios.get(`https://conection-ood1.onrender.com/api/carrito/completo/${documento}`);
                 setCartItems(response.data);
                 updateCartTotal(response.data);
             } catch (error) {
@@ -96,7 +96,7 @@ const CartPage = () => {
 
         try {
             // Enviar la solicitud al servidor para actualizar la cantidad en el carrito
-            await axios.put(`https://conection-gap0.onrender.com/api/carrito/actualizarc/${id}`, {
+            await axios.put(`https://conection-ood1.onrender.com/api/carrito/actualizarc/${id}`, {
                 cantidad: cantidadCambio,  // Diferencia en cantidad
                 id_producto: idProducto,   // Asegurarse de enviar el id del producto
             });
@@ -129,7 +129,7 @@ const CartPage = () => {
         }
 
         try {
-            await axios.put(`https://conection-gap0.onrender.com/api/carritos/actualizar/${itemId}`, {
+            await axios.put(`https://conection-ood1.onrender.com/api/carritos/actualizar/${itemId}`, {
                 opcion_adicional: selectedOption ? selectedOption.id_opcion : null,
                 dedicatoria: newDedicatoria,
             });
@@ -162,7 +162,7 @@ const CartPage = () => {
         }
 
         try {
-            await axios.delete(`https://conection-gap0.onrender.com/api/carrito/eliminar/${itemId}`);
+            await axios.delete(`https://conection-ood1.onrender.com/api/carrito/eliminar/${itemId}`);
             setCartItems(prevItems => prevItems.filter(item => item.id_carrito_item !== itemId));
             updateCartTotal(cartItems);
             setNotification('Producto eliminado del carrito.');
@@ -180,7 +180,7 @@ const CartPage = () => {
         }
 
         try {
-            await axios.delete(`https://conection-gap0.onrender.com/api/carrito/vaciar/${documento}`);
+            await axios.delete(`https://conection-ood1.onrender.com/api/carrito/vaciar/${documento}`);
             setCartItems([]);
             setCartTotal({ subtotal: 0, iva: 0 });
             setNotification('Carrito vacío.');
