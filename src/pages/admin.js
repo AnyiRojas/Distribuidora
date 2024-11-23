@@ -45,8 +45,6 @@ const App = () => {
     const [sortColumn, setSortColumn] = useState('documento');
     const [sortDirection, setSortDirection] = useState('asc');
     const [modalVisible, setModalVisible] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [currentOpcion, setCurrentOpcion] = useState(null);
     const [opcionesAdicionales, setOpcionesAdicionales] = useState([]);
 
@@ -75,7 +73,7 @@ const App = () => {
 
     const fetchPagos = async () => {
         try {
-            const response = await axios.get('https://conection-gap0.onrender.com/api/pagos');
+            const response = await axios.get('https://conection-1.onrender.com/api/pagos');
             setPagos(response.data); // Asegúrate de que response.data es un array
         } catch (error) {
             console.error('Error al obtener los pagos:', error);
@@ -84,7 +82,7 @@ const App = () => {
 
     const handleUpdateEstadoPago = async (id_pago, nuevoEstado) => {
         try {
-            const response = await axios.put(`https://conection-gap0.onrender.com/api/pagos/${id_pago}/estado`, { estado_pago: nuevoEstado });
+            const response = await axios.put(`https://conection-1.onrender.com/api/pagos/${id_pago}/estado`, { estado_pago: nuevoEstado });
             showNotification('Estado de pago actualizado exitosamente.');
 
             // Actualiza solo el pago que se ha cambiado
@@ -101,7 +99,7 @@ const App = () => {
     // Función para obtener usuarios
     const fetchUsuarios = async () => {
         try {
-            const response = await axios.get('https://conection-gap0.onrender.com/api/usuarios');
+            const response = await axios.get('https://conection-1.onrender.com/api/usuarios');
             setUsuarios(response.data);
         } catch (error) {
             console.error('Error al obtener los usuarios:', error);
@@ -117,7 +115,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.put(`https://conection-gap0.onrender.com/api/usuario/${documento}`, updatedUsuario);
+            const response = await axios.put(`https://conection-1.onrender.com/api/usuario/${documento}`, updatedUsuario);
             if (response.status === 200) {
                 fetchUsuarios();
                 showNotification('Usuario actualizado exitosamente.');
@@ -139,7 +137,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.put(`https://conection-gap0.onrender.com/api/usuario/${documento}/rol`, { rol_usuario: nuevoRol });
+            const response = await axios.put(`https://conection-1.onrender.com/api/usuario/${documento}/rol`, { rol_usuario: nuevoRol });
             if (response.status === 200) {
                 fetchUsuarios();
                 showNotification('Rol actualizado exitosamente.');
@@ -161,7 +159,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.patch(`https://conection-gap0.onrender.com/api/usuario/${documento}/estado`);
+            const response = await axios.patch(`https://conection-1.onrender.com/api/usuario/${documento}/estado`);
             if (response.status === 200) {
                 fetchUsuarios();
                 showNotification('Estado del usuario cambiado exitosamente.');
@@ -229,8 +227,8 @@ const App = () => {
             String(usuario.rol_usuario || '').toLowerCase().includes(query) ||
             (usuario.estado_usuario === 1 ? 'activo' : 'inactivo').includes(query)
         );
-    });
-
+    });    
+    
     const columnMapUsuario = {
         'documento': 'documento',
         'nombre': 'nombre_usuario',
@@ -246,13 +244,13 @@ const App = () => {
     const sortedUsuarios = [...filteredAndSortedUsuarios].sort((a, b) => {
         const aValue = a[columnMapUsuario[sortColumn]];
         const bValue = b[columnMapUsuario[sortColumn]];
-
+    
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-
+    
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-
+    
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -284,7 +282,7 @@ const App = () => {
 
     const fetchProductos = async () => {
         try {
-            const response = await axios.get('https://conection-gap0.onrender.com/api/productos');
+            const response = await axios.get('https://conection-1.onrender.com/api/productos');
             setProductos(response.data);
         } catch (error) {
             console.error('Error al obtener los productos:', error);
@@ -295,16 +293,10 @@ const App = () => {
     const fetchImages = async () => {
         try {
             const response = await axios.get('https://conection-gap0.onrender.com/api/images/producto');
-            // Si la respuesta es un array de nombres de imágenes
-            const imageURLs = response.data.map(imageName =>
-                `https://conection-gap0.onrender.com/uploads/img/producto/${imageName}`
-            );
-            setImageList(imageURLs);  // Almacenar las URLs completas de las imágenes
-        } catch (err) {
-            setError('Error al obtener imágenes');
-            console.error('Error al obtener imágenes:', err);
-        } finally {
-            setLoading(false);  // Cambiar estado de carga a false cuando la solicitud termine
+            setImageList(response.data);
+        } catch (error) {
+            console.error('Error al obtener imágenes:', error);
+            showNotification('Error al obtener imágenes.');
         }
     };
 
@@ -318,7 +310,7 @@ const App = () => {
             return;
         }
         try {
-            const response = await axios.put(`https://conection-gap0.onrender.com/api/productos/${idProducto}`, formData, {
+            const response = await axios.put(`https://conection-1.onrender.com/api/productos/${idProducto}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -351,7 +343,7 @@ const App = () => {
             const nuevoEstado = !productoActual.estado_producto;
 
             // Hacer la solicitud para actualizar el estado
-            const response = await axios.patch(`https://conection-gap0.onrender.com/api/productos/${idProducto}/estado`, {
+            const response = await axios.patch(`https://conection-1.onrender.com/api/productos/${idProducto}/estado`, {
                 estado: nuevoEstado,
             });
 
@@ -407,7 +399,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.post('https://conection-gap0.onrender.com/api/productos', formData, {
+            const response = await axios.post('https://conection-1.onrender.com/api/productos', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -426,26 +418,26 @@ const App = () => {
             console.error('El ID del producto no está definido');
             return;
         }
-
+    
         // Verificar que la nueva cantidad sea un número
         if (typeof nuevaCantidad !== 'number') {
             console.error('La nueva cantidad debe ser un número');
             showNotification('La nueva cantidad debe ser un número.');
             return;
         }
-
+    
         // Verificar que la nueva cantidad no sea negativa
         if (nuevaCantidad < 0) {
             console.error('La nueva cantidad no puede ser negativa');
             showNotification('La nueva cantidad no puede ser negativa.');
             return;
         }
-
+    
         try {
-            const response = await axios.patch(`https://conection-gap0.onrender.com/api/productos/${idProducto}/cantidad`, {
+            const response = await axios.patch(`https://conection-1.onrender.com/api/productos/${idProducto}/cantidad`, {
                 nuevaCantidad // Enviar la nueva cantidad con el nombre correcto
             });
-
+    
             if (response.status === 200) {
                 fetchProductos(); // Actualizar la lista de productos
                 showNotification('Cantidad disponible actualizada exitosamente.');
@@ -457,7 +449,7 @@ const App = () => {
             console.error('Error al actualizar la cantidad del producto:', error);
             showNotification('Error al actualizar la cantidad del producto.');
         }
-    };
+    };      
 
     const handleEditProducto = async (event) => {
         event.preventDefault();
@@ -540,23 +532,23 @@ const App = () => {
 
     // Ordenar productos
     const sortedProductos = [...filteredAndSortedProductos].sort((a, b) => {
-        const aValue = a[columnMapProducto[sortColumn]];
-        const bValue = b[columnMapProducto[sortColumn]];
+    const aValue = a[columnMapProducto[sortColumn]];
+    const bValue = b[columnMapProducto[sortColumn]];
 
-        if (aValue === undefined) return 1;
-        if (bValue === undefined) return -1;
+    if (aValue === undefined) return 1;
+    if (bValue === undefined) return -1;
 
-        if (typeof aValue === 'string' && typeof bValue === 'string') {
-            return sortDirection === 'asc'
-                ? aValue.localeCompare(bValue)
-                : bValue.localeCompare(aValue);
-        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
-            return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-        } else if (aValue instanceof Date && bValue instanceof Date) {
-            return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-        }
-        return 0;
-    });
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return sortDirection === 'asc'
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+    } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+    } else if (aValue instanceof Date && bValue instanceof Date) {
+        return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+    return 0;
+});
 
     // Paginación
     const totalPagesProductos = Math.ceil(sortedProductos.length / rowsPerPage);
@@ -576,11 +568,11 @@ const App = () => {
             setSortColumn(column);
             setSortDirection('asc');
         }
-    };
+    };    
 
     const fetchPedidos = async () => {
         try {
-            const response = await axios.get('https://conection-gap0.onrender.com/api/pedidos'); // Cambiado a /api/pedidos
+            const response = await axios.get('https://conection-1.onrender.com/api/pedidos'); // Cambiado a /api/pedidos
             setPedidos(response.data);
         } catch (error) {
             console.error('Error al obtener pedidos:', error);
@@ -596,7 +588,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.patch(`https://conection-gap0.onrender.com/api/pedidos/${idPedido}/estado`, {
+            const response = await axios.patch(`https://conection-1.onrender.com/api/pedidos/${idPedido}/estado`, {
                 nuevo_estado: nuevoEstado
             });
 
@@ -642,7 +634,7 @@ const App = () => {
         }
 
         try {
-            await axios.post('https://conection-gap0.onrender.com/api/pedidos', formData, {
+            await axios.post('https://conection-1.onrender.com/api/pedidos', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             fetchPedidos();
@@ -674,7 +666,7 @@ const App = () => {
         }
 
         try {
-            await axios.put(`https://conection-gap0.onrender.com/api/pedidos/${currentOrder.id_pedido}`, formData, {
+            await axios.put(`https://conection-1.onrender.com/api/pedidos/${currentOrder.id_pedido}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             fetchPedidos();
@@ -731,13 +723,13 @@ const App = () => {
     const sortedPedidos = [...filteredAndSortedPedidos].sort((a, b) => {
         const aValue = a[columnMapPedido[sortColumn]];
         const bValue = b[columnMapPedido[sortColumn]];
-
+    
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-
+    
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-
+    
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -770,7 +762,7 @@ const App = () => {
 
     const fetchTiposFlor = async () => {
         try {
-            const response = await axios.get('https://conection-gap0.onrender.com/api/tipos-flor');
+            const response = await axios.get('https://conection-1.onrender.com/api/tipos-flor');
             setTiposFlor(response.data);
         } catch (error) {
             console.error('Error al obtener tipos de flor:', error);
@@ -781,7 +773,7 @@ const App = () => {
         const nombreTipoFlor = tipoFlorData.get('nombre_tipo_flor');
 
         try {
-            const response = await axios.post('https://conection-gap0.onrender.com/api/tipo-flor', { nombre_tipo_flor: nombreTipoFlor });
+            const response = await axios.post('https://conection-1.onrender.com/api/tipo-flor', { nombre_tipo_flor: nombreTipoFlor });
             console.log('Respuesta del servidor:', response.data);
             fetchTiposFlor(); // Función para refrescar la lista de tipos de flores
             showNotification('Tipo de flor agregado exitosamente.');
@@ -802,7 +794,7 @@ const App = () => {
         const nombreTipoFlor = tipoFlorData.get('nombre_tipo_flor');
 
         try {
-            await axios.put(`https://conection-gap0.onrender.com/api/tipo-flor/${currentTipoFlor.id_tipo_flor}`, {
+            await axios.put(`https://conection-1.onrender.com/api/tipo-flor/${currentTipoFlor.id_tipo_flor}`, {
                 nombre_tipo_flor: nombreTipoFlor,
             });
             fetchTiposFlor(); // Función para refrescar la lista de tipos de flores
@@ -816,7 +808,7 @@ const App = () => {
 
     const handleDeleteTipoFlor = async (id_tipo_flor) => {
         try {
-            await axios.delete(`https://conection-gap0.onrender.com/api/tipo-flor/${id_tipo_flor}`);
+            await axios.delete(`https://conection-1.onrender.com/api/tipo-flor/${id_tipo_flor}`);
             fetchTiposFlor();
             showNotification('Tipo de flor eliminado exitosamente.');
         } catch (error) {
@@ -846,7 +838,7 @@ const App = () => {
 
     const fetchFechasEspeciales = async () => {
         try {
-            const response = await axios.get('https://conection-gap0.onrender.com/api/fechas-especiales');
+            const response = await axios.get('https://conection-1.onrender.com/api/fechas-especiales');
             setFechasEspeciales(response.data);
         } catch (error) {
             console.error('Error al obtener las fechas especiales:', error);
@@ -859,7 +851,7 @@ const App = () => {
             const formData = new FormData();
             formData.append('nombre_fecha_especial', fechaEspecialData.get('nombre_fecha_especial'));
 
-            await axios.post('https://conection-gap0.onrender.com/api/fechas-especiales', formData);
+            await axios.post('https://conection-1.onrender.com/api/fechas-especiales', formData);
             fetchFechasEspeciales();
             closeFechaEspecialModal();
             showNotification('Fecha especial añadida exitosamente.');
@@ -876,7 +868,7 @@ const App = () => {
         }
 
         try {
-            await axios.put(`https://conection-gap0.onrender.com/api/fechas-especiales/${currentFechaEspecial.id_fecha_especial}`, formData);
+            await axios.put(`https://conection-1.onrender.com/api/fechas-especiales/${currentFechaEspecial.id_fecha_especial}`, formData);
             fetchFechasEspeciales(); // Refresca la lista después de la actualización
             closeFechaEspecialModal();
             showNotification('Fecha especial actualizada exitosamente.');
@@ -888,7 +880,7 @@ const App = () => {
 
     const handleDeleteFechaEspecial = async (id_fecha_especial) => {
         try {
-            await axios.delete(`https://conection-gap0.onrender.com/api/fechas-especiales/${id_fecha_especial}`);
+            await axios.delete(`https://conection-1.onrender.com/api/fechas-especiales/${id_fecha_especial}`);
             fetchFechasEspeciales();
             showNotification('Fecha especial eliminada exitosamente.');
         } catch (error) {
@@ -934,13 +926,13 @@ const App = () => {
     const sortedFechasEspeciales = [...filteredAndSortedFechasEspeciales].sort((a, b) => {
         const aValue = a[columnMapFechasEspeciales[sortColumn]];
         const bValue = b[columnMapFechasEspeciales[sortColumn]];
-
+    
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-
+    
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-
+    
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -969,7 +961,7 @@ const App = () => {
 
     const fetchEventos = async () => {
         try {
-            const response = await axios.get('https://conection-gap0.onrender.com/api/eventos');
+            const response = await axios.get('https://conection-1.onrender.com/api/eventos');
             if (Array.isArray(response.data)) {
                 setEventos(response.data);
             } else {
@@ -991,7 +983,7 @@ const App = () => {
         }
 
         try {
-            const response = await axios.post('https://conection-gap0.onrender.com/api/eventos', formData, {
+            const response = await axios.post('https://conection-1.onrender.com/api/eventos', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -1022,7 +1014,7 @@ const App = () => {
         }
 
         try {
-            await axios.put(`https://conection-gap0.onrender.com/api/eventos/${currentEvento.id_evento}`, formData, {
+            await axios.put(`https://conection-1.onrender.com/api/eventos/${currentEvento.id_evento}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -1038,7 +1030,7 @@ const App = () => {
 
     const handleDeleteEvento = async (id_evento) => {
         try {
-            await axios.delete(`https://conection-gap0.onrender.com/api/eventos/${id_evento}`);
+            await axios.delete(`https://conection-1.onrender.com/api/eventos/${id_evento}`);
             fetchEventos();
             showNotification('Evento eliminado exitosamente.'); // Notificación de éxito
         } catch (error) {
@@ -1086,13 +1078,13 @@ const App = () => {
     const sortedEventos = [...filteredAndSortedEventos].sort((a, b) => {
         const aValue = a[columnMapEventos[sortColumn]];
         const bValue = b[columnMapEventos[sortColumn]];
-
+    
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-
+    
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-
+    
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -1136,13 +1128,13 @@ const App = () => {
     const sortedTiposFlor = [...filteredAndSortedTiposFlor].sort((a, b) => {
         const aValue = a[columnMapTiposFlor[sortColumn]];
         const bValue = b[columnMapTiposFlor[sortColumn]];
-
+    
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-
+    
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-
+    
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -1180,7 +1172,7 @@ const App = () => {
             String(pago.total_pago).toLowerCase().includes(query) ||
             String(pago.estado_pago || '').toLowerCase().includes(query)
         );
-    });
+    });    
 
 
     const columnMaPagos = {
@@ -1197,13 +1189,13 @@ const App = () => {
     const sortedPagos = [...filteredAndSortedPagos].sort((a, b) => {
         const aValue = a[columnMaPagos[sortColumn]];
         const bValue = b[columnMaPagos[sortColumn]];
-
+    
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-
+    
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-
+    
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -1232,7 +1224,7 @@ const App = () => {
 
     const fetchOpcionesAdicionales = async () => {
         try {
-            const response = await axios.get('https://conection-gap0.onrender.com/api/opciones-adicionales');
+            const response = await axios.get('https://conection-1.onrender.com/api/opciones-adicionales');
             setOpcionesAdicionales(response.data);
         } catch (error) {
             console.error('Error al obtener opciones adicionales:', error);
@@ -1242,7 +1234,7 @@ const App = () => {
 
     const createOpcionAdicional = async (nuevaOpcion) => {
         try {
-            await axios.post('https://conection-gap0.onrender.com/api/opciones-adicionales', nuevaOpcion);
+            await axios.post('https://conection-1.onrender.com/api/opciones-adicionales', nuevaOpcion);
             fetchOpcionesAdicionales();
             closeModal1();
             showNotification('Opción adicional creada exitosamente.');
@@ -1254,7 +1246,7 @@ const App = () => {
     const updateOpcionAdicional = async (id_opcion, nuevaOpcion) => {
         try {
             const { opcion_adicional, precio_adicional } = nuevaOpcion; // Desestructura las propiedades
-            await axios.put(`https://conection-gap0.onrender.com/api/opciones-adicionales/${id_opcion}`, {
+            await axios.put(`https://conection-1.onrender.com/api/opciones-adicionales/${id_opcion}`, {
                 nueva_opcion_adicional: opcion_adicional, // Renombra la propiedad
                 nuevo_precio_adicional: precio_adicional // Renombra la propiedad
             });
@@ -1268,7 +1260,7 @@ const App = () => {
 
     const deleteOpcionAdicional = async (id_opcion) => {
         try {
-            await axios.delete(`https://conection-gap0.onrender.com/api/opciones-adicionales/${id_opcion}`);
+            await axios.delete(`https://conection-1.onrender.com/api/opciones-adicionales/${id_opcion}`);
             fetchOpcionesAdicionales();
             showNotification('Opción adicional eliminada exitosamente.');
         } catch (error) {
@@ -1296,7 +1288,7 @@ const App = () => {
 
     const filteredAndSortedOpciones = opcionesAdicionales.filter((opcion) => {
         const lowerCaseQuery = searchQuery.toLowerCase();
-
+    
         return (
             opcion.id_opcion.toString().includes(lowerCaseQuery) ||
             opcion.opcion_adicional.toLowerCase().includes(lowerCaseQuery) ||
@@ -1314,13 +1306,13 @@ const App = () => {
     const sortedOpciones = [...filteredAndSortedOpciones].sort((a, b) => {
         const aValue = a[columnMapOpciones[sortColumn]];
         const bValue = b[columnMapOpciones[sortColumn]];
-
+    
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-
+    
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-
+    
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -1368,97 +1360,97 @@ const App = () => {
                 </div>
 
                 {activeSection === 'usuarios' && (
-                    <div className="admin-section">
-                        <div className="admin-section-header">
-                            <h2>Usuarios</h2>
-                            <input
-                                type="text"
-                                id="search-usuarios"
-                                className="admin-search"
-                                placeholder="Buscar usuario"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                            />
-                            <div className='admi'>
-                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
-                                    <option value={5}>5</option>
-                                    <option value={10}>10</option>
-                                    <option value={15}>15</option>
-                                    <option value={20}>20</option>
+    <div className="admin-section">
+        <div className="admin-section-header">
+            <h2>Usuarios</h2>
+            <input
+                type="text"
+                id="search-usuarios"
+                className="admin-search"
+                placeholder="Buscar usuario"
+                value={searchQuery}
+                onChange={handleSearchChange}
+            />
+            <div className='admi'>
+            <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={15}>15</option>
+                <option value={20}>20</option>
+            </select>
+            </div>
+        </div>
+        <table className="admin-table">
+            <thead>
+                <tr>
+                    {['documento', 'nombre', 'apellido', 'correo', 'direccion', 'fecha_registro', 'rol', 'estado'].map((col) => (
+                        <th key={col} onClick={() => handleSort(col)} style={{ cursor: 'pointer' }}>
+                            {col.charAt(0).toUpperCase() + col.slice(1)}
+                            {sortColumn === col && (
+                                <span className={sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'}></span>
+                            )}
+                        </th>
+                    ))}
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {paginatedUsuarios.length > 0 ? (
+                    paginatedUsuarios.map(usuario => (
+                        <tr key={usuario.documento} className={usuario.estado_usuario === 0 ? 'inactive' : ''}>
+                            <td>{usuario.documento}</td>
+                            <td>{usuario.nombre_usuario}</td>
+                            <td>{usuario.apellido_usuario}</td>
+                            <td>{usuario.correo_electronico_usuario}</td>
+                            <td>{usuario.direccion}</td>
+                            <td>{new Date(usuario.fecha_registro).toLocaleDateString()}</td>
+                            <td>
+                                <select
+                                    value={usuario.rol_usuario}
+                                    onChange={(e) => handleUpdateRolUsuario(usuario.documento, e.target.value)}
+                                    className="admin-role-select"
+                                >
+                                    <option value="Cliente">Cliente</option>
+                                    <option value="Vendedor">Vendedor</option>
+                                    <option value="Domiciliario">Domiciliario</option>
+                                    <option value="Administrador">Administrador</option>
                                 </select>
-                            </div>
-                        </div>
-                        <table className="admin-table">
-                            <thead>
-                                <tr>
-                                    {['documento', 'nombre', 'apellido', 'correo', 'direccion', 'fecha_registro', 'rol', 'estado'].map((col) => (
-                                        <th key={col} onClick={() => handleSort(col)} style={{ cursor: 'pointer' }}>
-                                            {col.charAt(0).toUpperCase() + col.slice(1)}
-                                            {sortColumn === col && (
-                                                <span className={sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'}></span>
-                                            )}
-                                        </th>
-                                    ))}
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {paginatedUsuarios.length > 0 ? (
-                                    paginatedUsuarios.map(usuario => (
-                                        <tr key={usuario.documento} className={usuario.estado_usuario === 0 ? 'inactive' : ''}>
-                                            <td>{usuario.documento}</td>
-                                            <td>{usuario.nombre_usuario}</td>
-                                            <td>{usuario.apellido_usuario}</td>
-                                            <td>{usuario.correo_electronico_usuario}</td>
-                                            <td>{usuario.direccion}</td>
-                                            <td>{new Date(usuario.fecha_registro).toLocaleDateString()}</td>
-                                            <td>
-                                                <select
-                                                    value={usuario.rol_usuario}
-                                                    onChange={(e) => handleUpdateRolUsuario(usuario.documento, e.target.value)}
-                                                    className="admin-role-select"
-                                                >
-                                                    <option value="Cliente">Cliente</option>
-                                                    <option value="Vendedor">Vendedor</option>
-                                                    <option value="Domiciliario">Domiciliario</option>
-                                                    <option value="Administrador">Administrador</option>
-                                                </select>
-                                            </td>
-                                            <td>{usuario.estado_usuario === 1 ? 'Activo' : 'Inactivo'}</td>
-                                            <td>
-                                                <div className="admin-actions">
-                                                    <FontAwesomeIcon
-                                                        icon={faEdit}
-                                                        className="admin-icon-edit"
-                                                        onClick={() => openEditModal(usuario)}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        icon={usuario.estado_usuario === 1 ? faToggleOn : faToggleOff}
-                                                        className="icon-toggle"
-                                                        onClick={() => handleToggleStatus(usuario.documento)}
-                                                    />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="9">No hay usuarios disponibles</td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                        <div className="pagination">
-                            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                                Anterior
-                            </button>
-                            <span>Página {currentPage} de {totalPages}</span>
-                            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                                Siguiente
-                            </button>
-                        </div>
-                    </div>
+                            </td>
+                            <td>{usuario.estado_usuario === 1 ? 'Activo' : 'Inactivo'}</td>
+                            <td>
+                                <div className="admin-actions">
+                                    <FontAwesomeIcon
+                                        icon={faEdit}
+                                        className="admin-icon-edit"
+                                        onClick={() => openEditModal(usuario)}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={usuario.estado_usuario === 1 ? faToggleOn : faToggleOff}
+                                        className="icon-toggle"
+                                        onClick={() => handleToggleStatus(usuario.documento)}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="9">No hay usuarios disponibles</td>
+                    </tr>
                 )}
+            </tbody>
+        </table>
+        <div className="pagination">
+            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+                Anterior
+            </button>
+            <span>Página {currentPage} de {totalPages}</span>
+            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
+                Siguiente
+            </button>
+        </div>
+    </div>
+)}
 
                 {activeSection === 'productos' && (
                     <div className="admin-section">
@@ -1473,7 +1465,7 @@ const App = () => {
                                 onChange={handleSearchChangeProductos}
                             />
                             <div className='admi'>
-                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1488,7 +1480,7 @@ const App = () => {
                                 onClose={closeCreateProductModal}
                                 fetchProductos={fetchProductos}
                             />
-                        )}
+                        )}  
                         <table className="admin-table">
                             <thead>
                                 <tr>
@@ -1579,7 +1571,7 @@ const App = () => {
                                 onChange={handleSearchChangePedidos}
                             />
                             <div className='admi'>
-                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1665,7 +1657,7 @@ const App = () => {
                                 onChange={handleSearchChangeTiposFlor}
                             />
                             <div className='admi'>
-                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1749,7 +1741,7 @@ const App = () => {
                                 onChange={handleSearchChangeFechasEspeciales}
                             />
                             <div className='admi'>
-                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1828,7 +1820,7 @@ const App = () => {
                                 onChange={handleSearchChangeEventos}
                             />
                             <div className='admi'>
-                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1923,7 +1915,7 @@ const App = () => {
                                 onChange={handleSearchChangePagos}
                             />
                             <div className='admi'>
-                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1987,86 +1979,86 @@ const App = () => {
                     </div>
                 )}
 
-                {activeSection === 'opciones' && (
-                    <div className="admin-section">
-                        <div className="admin-section-header">
-                            <h2>Opciones <br></br> Adicionales</h2>
-                            <input
-                                type="text"
-                                placeholder="Buscar opción adicional..."
-                                value={searchQuery}
-                                onChange={handleSearchChangeOpciones}
-                                className="admin-search"
-                            />
-                            <div className="admi">
-                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
-                                    <option value={5}>5</option>
-                                    <option value={10}>10</option>
-                                    <option value={15}>15</option>
-                                    <option value={20}>20</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button onClick={() => handleOpenModal()} className="admin-add-button">Agregar Opción</button>
-                        <table className="admin-table">
-                            <thead>
-                                <tr>
-                                    {['ID', 'Opción Adicional', 'Precio Adicional'].map((col) => (
-                                        <th key={col} onClick={() => handleSortOpciones(col)} style={{ cursor: 'pointer' }}>
-                                            {col.charAt(0).toUpperCase() + col.slice(1)}
-                                            {sortColumn === col && (
-                                                <span className={sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'}></span>
-                                            )}
-                                        </th>
-                                    ))}
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {paginatedOpciones.length > 0 ? (
-                                    paginatedOpciones.map(opcion => (
-                                        <tr key={opcion.id_opcion}>
-                                            <td>{opcion.id_opcion}</td>
-                                            <td>{opcion.opcion_adicional}</td>
-                                            <td>${parseFloat(opcion.precio_adicional).toLocaleString()}</td>
-                                            <td>
-                                                <div className="admin-actions">
-                                                    <FontAwesomeIcon
-                                                        icon={faEdit}
-                                                        className="icon-edit"
-                                                        title="Editar opción adicional"
-                                                        onClick={() => handleOpenModal(opcion)}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        icon={faTrash}
-                                                        className="icon-delete"
-                                                        title="Eliminar opción adicional"
-                                                        onClick={() => deleteOpcionAdicional(opcion.id_opcion)}
-                                                    />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="4" className="no-options-message"> {/* Cambiar colSpan a 4 */}
-                                            No hay opciones adicionales disponibles
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                        <div className="pagination">
-                            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                                Anterior
-                            </button>
-                            <span>Página {currentPage} de {totalPagesOpciones}</span>
-                            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPagesOpciones))} disabled={currentPage === totalPagesOpciones}>
-                                Siguiente
-                            </button>
-                        </div>
-                    </div>
+{activeSection === 'opciones' && (
+    <div className="admin-section">
+        <div className="admin-section-header">
+            <h2>Opciones <br></br> Adicionales</h2>
+            <input
+                type="text"
+                placeholder="Buscar opción adicional..."
+                value={searchQuery}
+                onChange={handleSearchChangeOpciones}
+                className="admin-search"
+            />
+            <div className="admi">
+                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                    <option value={20}>20</option>
+                </select>
+            </div>
+        </div>
+        <button onClick={() => handleOpenModal()} className="admin-add-button">Agregar Opción</button>
+        <table className="admin-table">
+            <thead>
+                <tr>
+                    {['ID', 'Opción Adicional', 'Precio Adicional'].map((col) => (
+                        <th key={col} onClick={() => handleSortOpciones(col)} style={{ cursor: 'pointer' }}>
+                            {col.charAt(0).toUpperCase() + col.slice(1)}
+                            {sortColumn === col && (
+                                <span className={sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'}></span>
+                            )}
+                        </th>
+                    ))}
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {paginatedOpciones.length > 0 ? (
+                    paginatedOpciones.map(opcion => (
+                        <tr key={opcion.id_opcion}>
+                            <td>{opcion.id_opcion}</td>
+                            <td>{opcion.opcion_adicional}</td>
+                            <td>${parseFloat(opcion.precio_adicional).toLocaleString()}</td>
+                            <td>
+                                <div className="admin-actions">
+                                    <FontAwesomeIcon
+                                        icon={faEdit}
+                                        className="icon-edit"
+                                        title="Editar opción adicional"
+                                        onClick={() => handleOpenModal(opcion)}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faTrash}
+                                        className="icon-delete"
+                                        title="Eliminar opción adicional"
+                                        onClick={() => deleteOpcionAdicional(opcion.id_opcion)}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="4" className="no-options-message"> {/* Cambiar colSpan a 4 */}
+                            No hay opciones adicionales disponibles
+                        </td>
+                    </tr>
                 )}
+            </tbody>
+        </table>
+        <div className="pagination">
+            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+                Anterior
+            </button>
+            <span>Página {currentPage} de {totalPagesOpciones}</span>
+            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPagesOpciones))} disabled={currentPage === totalPagesOpciones}>
+                Siguiente
+            </button>
+        </div>
+    </div>
+)}
 
 
             </div>
