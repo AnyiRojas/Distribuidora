@@ -227,8 +227,8 @@ const App = () => {
             String(usuario.rol_usuario || '').toLowerCase().includes(query) ||
             (usuario.estado_usuario === 1 ? 'activo' : 'inactivo').includes(query)
         );
-    });    
-    
+    });
+
     const columnMapUsuario = {
         'documento': 'documento',
         'nombre': 'nombre_usuario',
@@ -244,13 +244,13 @@ const App = () => {
     const sortedUsuarios = [...filteredAndSortedUsuarios].sort((a, b) => {
         const aValue = a[columnMapUsuario[sortColumn]];
         const bValue = b[columnMapUsuario[sortColumn]];
-    
+
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-    
+
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-    
+
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -292,13 +292,19 @@ const App = () => {
 
     const fetchImages = async () => {
         try {
-          const response = await axios.get('https://conection-gap0.onrender.com/api/images/producto');
-          setImageList(response.data);
-        } catch (error) {
-          console.error('Error al obtener imágenes:', error);
+            const response = await axios.get('https://conection-gap0.onrender.com/api/images/producto');
+            // Si la respuesta es un array de nombres de imágenes
+            const imageURLs = response.data.map(imageName =>
+                `https://conection-gap0.onrender.com/uploads/img/producto/${imageName}`
+            );
+            setImageList(imageURLs);  // Almacenar las URLs completas de las imágenes
+        } catch (err) {
+            setError('Error al obtener imágenes');
+            console.error('Error al obtener imágenes:', err);
+        } finally {
+            setLoading(false);  // Cambiar estado de carga a false cuando la solicitud termine
         }
-      };
-      
+    };
 
     useEffect(() => {
         fetchImages();
@@ -418,26 +424,26 @@ const App = () => {
             console.error('El ID del producto no está definido');
             return;
         }
-    
+
         // Verificar que la nueva cantidad sea un número
         if (typeof nuevaCantidad !== 'number') {
             console.error('La nueva cantidad debe ser un número');
             showNotification('La nueva cantidad debe ser un número.');
             return;
         }
-    
+
         // Verificar que la nueva cantidad no sea negativa
         if (nuevaCantidad < 0) {
             console.error('La nueva cantidad no puede ser negativa');
             showNotification('La nueva cantidad no puede ser negativa.');
             return;
         }
-    
+
         try {
             const response = await axios.patch(`https://conection-gap0.onrender.com/api/productos/${idProducto}/cantidad`, {
                 nuevaCantidad // Enviar la nueva cantidad con el nombre correcto
             });
-    
+
             if (response.status === 200) {
                 fetchProductos(); // Actualizar la lista de productos
                 showNotification('Cantidad disponible actualizada exitosamente.');
@@ -449,7 +455,7 @@ const App = () => {
             console.error('Error al actualizar la cantidad del producto:', error);
             showNotification('Error al actualizar la cantidad del producto.');
         }
-    };      
+    };
 
     const handleEditProducto = async (event) => {
         event.preventDefault();
@@ -532,23 +538,23 @@ const App = () => {
 
     // Ordenar productos
     const sortedProductos = [...filteredAndSortedProductos].sort((a, b) => {
-    const aValue = a[columnMapProducto[sortColumn]];
-    const bValue = b[columnMapProducto[sortColumn]];
+        const aValue = a[columnMapProducto[sortColumn]];
+        const bValue = b[columnMapProducto[sortColumn]];
 
-    if (aValue === undefined) return 1;
-    if (bValue === undefined) return -1;
+        if (aValue === undefined) return 1;
+        if (bValue === undefined) return -1;
 
-    if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return sortDirection === 'asc'
-            ? aValue.localeCompare(bValue)
-            : bValue.localeCompare(aValue);
-    } else if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-    } else if (aValue instanceof Date && bValue instanceof Date) {
-        return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
-    }
-    return 0;
-});
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+            return sortDirection === 'asc'
+                ? aValue.localeCompare(bValue)
+                : bValue.localeCompare(aValue);
+        } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+            return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+        } else if (aValue instanceof Date && bValue instanceof Date) {
+            return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+        }
+        return 0;
+    });
 
     // Paginación
     const totalPagesProductos = Math.ceil(sortedProductos.length / rowsPerPage);
@@ -568,7 +574,7 @@ const App = () => {
             setSortColumn(column);
             setSortDirection('asc');
         }
-    };    
+    };
 
     const fetchPedidos = async () => {
         try {
@@ -723,13 +729,13 @@ const App = () => {
     const sortedPedidos = [...filteredAndSortedPedidos].sort((a, b) => {
         const aValue = a[columnMapPedido[sortColumn]];
         const bValue = b[columnMapPedido[sortColumn]];
-    
+
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-    
+
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-    
+
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -926,13 +932,13 @@ const App = () => {
     const sortedFechasEspeciales = [...filteredAndSortedFechasEspeciales].sort((a, b) => {
         const aValue = a[columnMapFechasEspeciales[sortColumn]];
         const bValue = b[columnMapFechasEspeciales[sortColumn]];
-    
+
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-    
+
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-    
+
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -1078,13 +1084,13 @@ const App = () => {
     const sortedEventos = [...filteredAndSortedEventos].sort((a, b) => {
         const aValue = a[columnMapEventos[sortColumn]];
         const bValue = b[columnMapEventos[sortColumn]];
-    
+
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-    
+
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-    
+
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -1128,13 +1134,13 @@ const App = () => {
     const sortedTiposFlor = [...filteredAndSortedTiposFlor].sort((a, b) => {
         const aValue = a[columnMapTiposFlor[sortColumn]];
         const bValue = b[columnMapTiposFlor[sortColumn]];
-    
+
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-    
+
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-    
+
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -1172,7 +1178,7 @@ const App = () => {
             String(pago.total_pago).toLowerCase().includes(query) ||
             String(pago.estado_pago || '').toLowerCase().includes(query)
         );
-    });    
+    });
 
 
     const columnMaPagos = {
@@ -1189,13 +1195,13 @@ const App = () => {
     const sortedPagos = [...filteredAndSortedPagos].sort((a, b) => {
         const aValue = a[columnMaPagos[sortColumn]];
         const bValue = b[columnMaPagos[sortColumn]];
-    
+
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-    
+
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-    
+
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -1288,7 +1294,7 @@ const App = () => {
 
     const filteredAndSortedOpciones = opcionesAdicionales.filter((opcion) => {
         const lowerCaseQuery = searchQuery.toLowerCase();
-    
+
         return (
             opcion.id_opcion.toString().includes(lowerCaseQuery) ||
             opcion.opcion_adicional.toLowerCase().includes(lowerCaseQuery) ||
@@ -1306,13 +1312,13 @@ const App = () => {
     const sortedOpciones = [...filteredAndSortedOpciones].sort((a, b) => {
         const aValue = a[columnMapOpciones[sortColumn]];
         const bValue = b[columnMapOpciones[sortColumn]];
-    
+
         if (aValue === undefined) return 1;
         if (bValue === undefined) return -1;
-    
+
         const aIsDate = aValue instanceof Date;
         const bIsDate = bValue instanceof Date;
-    
+
         if (aIsDate && bIsDate) {
             return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
         } else if (typeof aValue === 'string' && typeof bValue === 'string') {
@@ -1360,97 +1366,97 @@ const App = () => {
                 </div>
 
                 {activeSection === 'usuarios' && (
-    <div className="admin-section">
-        <div className="admin-section-header">
-            <h2>Usuarios</h2>
-            <input
-                type="text"
-                id="search-usuarios"
-                className="admin-search"
-                placeholder="Buscar usuario"
-                value={searchQuery}
-                onChange={handleSearchChange}
-            />
-            <div className='admi'>
-            <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={15}>15</option>
-                <option value={20}>20</option>
-            </select>
-            </div>
-        </div>
-        <table className="admin-table">
-            <thead>
-                <tr>
-                    {['documento', 'nombre', 'apellido', 'correo', 'direccion', 'fecha_registro', 'rol', 'estado'].map((col) => (
-                        <th key={col} onClick={() => handleSort(col)} style={{ cursor: 'pointer' }}>
-                            {col.charAt(0).toUpperCase() + col.slice(1)}
-                            {sortColumn === col && (
-                                <span className={sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'}></span>
-                            )}
-                        </th>
-                    ))}
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {paginatedUsuarios.length > 0 ? (
-                    paginatedUsuarios.map(usuario => (
-                        <tr key={usuario.documento} className={usuario.estado_usuario === 0 ? 'inactive' : ''}>
-                            <td>{usuario.documento}</td>
-                            <td>{usuario.nombre_usuario}</td>
-                            <td>{usuario.apellido_usuario}</td>
-                            <td>{usuario.correo_electronico_usuario}</td>
-                            <td>{usuario.direccion}</td>
-                            <td>{new Date(usuario.fecha_registro).toLocaleDateString()}</td>
-                            <td>
-                                <select
-                                    value={usuario.rol_usuario}
-                                    onChange={(e) => handleUpdateRolUsuario(usuario.documento, e.target.value)}
-                                    className="admin-role-select"
-                                >
-                                    <option value="Cliente">Cliente</option>
-                                    <option value="Vendedor">Vendedor</option>
-                                    <option value="Domiciliario">Domiciliario</option>
-                                    <option value="Administrador">Administrador</option>
+                    <div className="admin-section">
+                        <div className="admin-section-header">
+                            <h2>Usuarios</h2>
+                            <input
+                                type="text"
+                                id="search-usuarios"
+                                className="admin-search"
+                                placeholder="Buscar usuario"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                            />
+                            <div className='admi'>
+                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                    <option value={5}>5</option>
+                                    <option value={10}>10</option>
+                                    <option value={15}>15</option>
+                                    <option value={20}>20</option>
                                 </select>
-                            </td>
-                            <td>{usuario.estado_usuario === 1 ? 'Activo' : 'Inactivo'}</td>
-                            <td>
-                                <div className="admin-actions">
-                                    <FontAwesomeIcon
-                                        icon={faEdit}
-                                        className="admin-icon-edit"
-                                        onClick={() => openEditModal(usuario)}
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={usuario.estado_usuario === 1 ? faToggleOn : faToggleOff}
-                                        className="icon-toggle"
-                                        onClick={() => handleToggleStatus(usuario.documento)}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                    ))
-                ) : (
-                    <tr>
-                        <td colSpan="9">No hay usuarios disponibles</td>
-                    </tr>
+                            </div>
+                        </div>
+                        <table className="admin-table">
+                            <thead>
+                                <tr>
+                                    {['documento', 'nombre', 'apellido', 'correo', 'direccion', 'fecha_registro', 'rol', 'estado'].map((col) => (
+                                        <th key={col} onClick={() => handleSort(col)} style={{ cursor: 'pointer' }}>
+                                            {col.charAt(0).toUpperCase() + col.slice(1)}
+                                            {sortColumn === col && (
+                                                <span className={sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'}></span>
+                                            )}
+                                        </th>
+                                    ))}
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {paginatedUsuarios.length > 0 ? (
+                                    paginatedUsuarios.map(usuario => (
+                                        <tr key={usuario.documento} className={usuario.estado_usuario === 0 ? 'inactive' : ''}>
+                                            <td>{usuario.documento}</td>
+                                            <td>{usuario.nombre_usuario}</td>
+                                            <td>{usuario.apellido_usuario}</td>
+                                            <td>{usuario.correo_electronico_usuario}</td>
+                                            <td>{usuario.direccion}</td>
+                                            <td>{new Date(usuario.fecha_registro).toLocaleDateString()}</td>
+                                            <td>
+                                                <select
+                                                    value={usuario.rol_usuario}
+                                                    onChange={(e) => handleUpdateRolUsuario(usuario.documento, e.target.value)}
+                                                    className="admin-role-select"
+                                                >
+                                                    <option value="Cliente">Cliente</option>
+                                                    <option value="Vendedor">Vendedor</option>
+                                                    <option value="Domiciliario">Domiciliario</option>
+                                                    <option value="Administrador">Administrador</option>
+                                                </select>
+                                            </td>
+                                            <td>{usuario.estado_usuario === 1 ? 'Activo' : 'Inactivo'}</td>
+                                            <td>
+                                                <div className="admin-actions">
+                                                    <FontAwesomeIcon
+                                                        icon={faEdit}
+                                                        className="admin-icon-edit"
+                                                        onClick={() => openEditModal(usuario)}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        icon={usuario.estado_usuario === 1 ? faToggleOn : faToggleOff}
+                                                        className="icon-toggle"
+                                                        onClick={() => handleToggleStatus(usuario.documento)}
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="9">No hay usuarios disponibles</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                        <div className="pagination">
+                            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+                                Anterior
+                            </button>
+                            <span>Página {currentPage} de {totalPages}</span>
+                            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
+                                Siguiente
+                            </button>
+                        </div>
+                    </div>
                 )}
-            </tbody>
-        </table>
-        <div className="pagination">
-            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                Anterior
-            </button>
-            <span>Página {currentPage} de {totalPages}</span>
-            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
-                Siguiente
-            </button>
-        </div>
-    </div>
-)}
 
                 {activeSection === 'productos' && (
                     <div className="admin-section">
@@ -1465,7 +1471,7 @@ const App = () => {
                                 onChange={handleSearchChangeProductos}
                             />
                             <div className='admi'>
-                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1480,7 +1486,7 @@ const App = () => {
                                 onClose={closeCreateProductModal}
                                 fetchProductos={fetchProductos}
                             />
-                        )}  
+                        )}
                         <table className="admin-table">
                             <thead>
                                 <tr>
@@ -1571,7 +1577,7 @@ const App = () => {
                                 onChange={handleSearchChangePedidos}
                             />
                             <div className='admi'>
-                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1657,7 +1663,7 @@ const App = () => {
                                 onChange={handleSearchChangeTiposFlor}
                             />
                             <div className='admi'>
-                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1741,7 +1747,7 @@ const App = () => {
                                 onChange={handleSearchChangeFechasEspeciales}
                             />
                             <div className='admi'>
-                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1820,7 +1826,7 @@ const App = () => {
                                 onChange={handleSearchChangeEventos}
                             />
                             <div className='admi'>
-                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1915,7 +1921,7 @@ const App = () => {
                                 onChange={handleSearchChangePagos}
                             />
                             <div className='admi'>
-                                <select  value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
@@ -1979,86 +1985,86 @@ const App = () => {
                     </div>
                 )}
 
-{activeSection === 'opciones' && (
-    <div className="admin-section">
-        <div className="admin-section-header">
-            <h2>Opciones <br></br> Adicionales</h2>
-            <input
-                type="text"
-                placeholder="Buscar opción adicional..."
-                value={searchQuery}
-                onChange={handleSearchChangeOpciones}
-                className="admin-search"
-            />
-            <div className="admi">
-                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={15}>15</option>
-                    <option value={20}>20</option>
-                </select>
-            </div>
-        </div>
-        <button onClick={() => handleOpenModal()} className="admin-add-button">Agregar Opción</button>
-        <table className="admin-table">
-            <thead>
-                <tr>
-                    {['ID', 'Opción Adicional', 'Precio Adicional'].map((col) => (
-                        <th key={col} onClick={() => handleSortOpciones(col)} style={{ cursor: 'pointer' }}>
-                            {col.charAt(0).toUpperCase() + col.slice(1)}
-                            {sortColumn === col && (
-                                <span className={sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'}></span>
-                            )}
-                        </th>
-                    ))}
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {paginatedOpciones.length > 0 ? (
-                    paginatedOpciones.map(opcion => (
-                        <tr key={opcion.id_opcion}>
-                            <td>{opcion.id_opcion}</td>
-                            <td>{opcion.opcion_adicional}</td>
-                            <td>${parseFloat(opcion.precio_adicional).toLocaleString()}</td>
-                            <td>
-                                <div className="admin-actions">
-                                    <FontAwesomeIcon
-                                        icon={faEdit}
-                                        className="icon-edit"
-                                        title="Editar opción adicional"
-                                        onClick={() => handleOpenModal(opcion)}
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={faTrash}
-                                        className="icon-delete"
-                                        title="Eliminar opción adicional"
-                                        onClick={() => deleteOpcionAdicional(opcion.id_opcion)}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                    ))
-                ) : (
-                    <tr>
-                        <td colSpan="4" className="no-options-message"> {/* Cambiar colSpan a 4 */}
-                            No hay opciones adicionales disponibles
-                        </td>
-                    </tr>
+                {activeSection === 'opciones' && (
+                    <div className="admin-section">
+                        <div className="admin-section-header">
+                            <h2>Opciones <br></br> Adicionales</h2>
+                            <input
+                                type="text"
+                                placeholder="Buscar opción adicional..."
+                                value={searchQuery}
+                                onChange={handleSearchChangeOpciones}
+                                className="admin-search"
+                            />
+                            <div className="admi">
+                                <select value={rowsPerPage} onChange={(e) => setRowsPerPage(Number(e.target.value))}>
+                                    <option value={5}>5</option>
+                                    <option value={10}>10</option>
+                                    <option value={15}>15</option>
+                                    <option value={20}>20</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button onClick={() => handleOpenModal()} className="admin-add-button">Agregar Opción</button>
+                        <table className="admin-table">
+                            <thead>
+                                <tr>
+                                    {['ID', 'Opción Adicional', 'Precio Adicional'].map((col) => (
+                                        <th key={col} onClick={() => handleSortOpciones(col)} style={{ cursor: 'pointer' }}>
+                                            {col.charAt(0).toUpperCase() + col.slice(1)}
+                                            {sortColumn === col && (
+                                                <span className={sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'}></span>
+                                            )}
+                                        </th>
+                                    ))}
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {paginatedOpciones.length > 0 ? (
+                                    paginatedOpciones.map(opcion => (
+                                        <tr key={opcion.id_opcion}>
+                                            <td>{opcion.id_opcion}</td>
+                                            <td>{opcion.opcion_adicional}</td>
+                                            <td>${parseFloat(opcion.precio_adicional).toLocaleString()}</td>
+                                            <td>
+                                                <div className="admin-actions">
+                                                    <FontAwesomeIcon
+                                                        icon={faEdit}
+                                                        className="icon-edit"
+                                                        title="Editar opción adicional"
+                                                        onClick={() => handleOpenModal(opcion)}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        icon={faTrash}
+                                                        className="icon-delete"
+                                                        title="Eliminar opción adicional"
+                                                        onClick={() => deleteOpcionAdicional(opcion.id_opcion)}
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="4" className="no-options-message"> {/* Cambiar colSpan a 4 */}
+                                            No hay opciones adicionales disponibles
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                        <div className="pagination">
+                            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+                                Anterior
+                            </button>
+                            <span>Página {currentPage} de {totalPagesOpciones}</span>
+                            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPagesOpciones))} disabled={currentPage === totalPagesOpciones}>
+                                Siguiente
+                            </button>
+                        </div>
+                    </div>
                 )}
-            </tbody>
-        </table>
-        <div className="pagination">
-            <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                Anterior
-            </button>
-            <span>Página {currentPage} de {totalPagesOpciones}</span>
-            <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPagesOpciones))} disabled={currentPage === totalPagesOpciones}>
-                Siguiente
-            </button>
-        </div>
-    </div>
-)}
 
 
             </div>
