@@ -290,6 +290,20 @@ const App = () => {
         }
     };
 
+    const fetchImages = async () => {
+        try {
+          const response = await axios.get('https://conection-gap0.onrender.com/api/images/producto');
+          setImageList(response.data);
+        } catch (error) {
+          console.error('Error al obtener imágenes:', error);
+        }
+      };
+      
+
+    useEffect(() => {
+        fetchImages();
+    }, []);
+
     const handleUpdateProducto = async (idProducto, formData) => {
         if (!idProducto) {
             console.error('El id Producto no está definido');
